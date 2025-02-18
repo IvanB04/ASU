@@ -2,9 +2,13 @@ package asu.asu.controller;
 
 import asu.asu.models.User;
 import asu.asu.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/Auth")
@@ -25,13 +29,7 @@ public class AuthController {
                            @RequestParam String name,
                            @RequestParam String picture,
                            @RequestParam String username) {
-        // Log the incoming request parameters to see if they are being received correctly
-        System.out.println("Received registration data:");
-        System.out.println("Email: " + email);
-        System.out.println("Username: " + username);
-        System.out.println("Name: " + name);
-        System.out.println("Picture URL: " + picture);
-        System.out.println("Password: " + password); // Be careful with logging passwords in production
+
 
         // Using the constructor to create a new User object
         User user = new User(username, password, email, name, picture);
@@ -48,10 +46,18 @@ public class AuthController {
 
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password) {
-        User user = userService.loginUser(email, password);
-        if (user != null) {
-            return "redirect:/home";  // Redirect to home page on successful login
+        if (email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            return "redirect:/login?error=emptyFields";  // Error for empty inputs
         }
-        return "redirect:/login?error=true";  // Redirect back to login on failure
+        System.out.println("EMAIL: " + email);  // Check the email value being passed
+        Optional<User> user = userService.loginUser(email, password);
+        if (user.isPresent()) {
+            return "redirect:/home";  // Successfully logged in
+        } else {
+            return "redirect:/login?error=invalidCredentials";  // Invalid credentials
+        }
     }
+
+
 }
+

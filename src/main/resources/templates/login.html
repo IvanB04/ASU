@@ -2,15 +2,88 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
+  <!-- Link to Bootstrap CSS for styling -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom styles -->
+  <style>
+    body {
+      background-color: #f4f7fa;
+      font-family: 'Arial', sans-serif;
+    }
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .login-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .login-container .form-control {
+      border-radius: 25px;
+      padding: 15px;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 25px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+    }
+    .login-container button:hover {
+      background-color: #0056b3;
+    }
+    .alert {
+      margin-top: 20px;
+    }
+    .text-center {
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-<h2>Login</h2>
-<form action="/login" method="post">
-  <input type="email" name="email" placeholder="Email" required><br>
-  <input type="password" name="password" placeholder="Password" required><br>
-  <button type="submit">Login</button>
-</form>
-<a href="/register">Don't have an account? Register here</a>
+
+<div class="login-container">
+  <h2>Login</h2>
+
+  <!-- Show error message if login fails -->
+  <div th:if="${param.error}" class="alert alert-danger">
+    Invalid username or password. Please try again.
+  </div>
+
+  <form  th:action="@{/login}" method="post">
+    <!-- Email Input -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
+    </div>
+
+    <!-- Password Input -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" required placeholder="Enter your password">
+    </div>
+
+    <!-- Login Button -->
+    <button type="submit">Login</button>
+  </form>
+
+  <!-- Register Link -->
+  <div class="text-center mt-3">
+    <p>Don't have an account? <a href="/register">Sign up here</a></p>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
